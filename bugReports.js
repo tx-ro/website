@@ -14,7 +14,7 @@ if (bugInput) {
       };
 
       try {
-        const res = await fetch('https://backend-website-h19f.onrender.com/report', { 
+        const res = await fetch('https://backend-website-h19f.onrender.com/', { 
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
