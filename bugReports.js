@@ -1,30 +1,33 @@
-const y = document.getElementById('bugReport');
-if (y) {
-  y.addEventListener('keydown', e => {
+const bugInput = document.getElementById('bugReport');
+
+if (bugInput) {
+  bugInput.addEventListener('keydown', async (e) => {
     if (e.ctrlKey && e.key === 'Enter') {
-      const m = y.value.trim();
-      if (!m) return;
+      const message = bugInput.value.trim();
+      if (!message) return;
 
       const payload = {
-        message: m,
+        message,
         browser: navigator.userAgent,
         time: new Date().toLocaleString(),
         version: document.getElementById('versionLabel')?.textContent || 'Unknown'
       };
 
-      fetch('https://backend-website-h19f.onrender.com', { 
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      })
-      .then(() => {
+      try {
+        const res = await fetch('https://backend-website-h19f.onrender.com/report', { 
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
         alert("Bug report sent! Thank you 🙂");
-        y.value = '';
-      })
-      .catch(err => {
+        bugInput.value = '';
+      } catch (err) {
         console.error("Failed:", err);
         alert("Failed to send bug report. Check console.");
-      });
+      }
     }
   });
 }
