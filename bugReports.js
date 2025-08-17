@@ -6,26 +6,29 @@ if (bugInput) {
       const message = bugInput.value.trim();
       if (!message) return;
 
-      const payload = {
-        message,
-        browser: navigator.userAgent,
-        platform: navigator.platform,
-        time: new Date().toLocaleString(),
-        version: document.getElementById('versionLabel')?.textContent || 'Unknown'
-      };
+      const browserInfo = navigator.userAgent;
+      const platformInfo = navigator.platform;
+      const version = document.getElementById('versionLabel')?.textContent || 'Unknown';
+      const time = new Date().toLocaleString();
 
+      // Show confirmation popup
       const confirmation = `
 You are about to send this bug report:
 -------------------------------
-Message: ${payload.message}
-Browser/Platform: ${payload.browser} / ${payload.platform}
-Time: ${payload.time}
-Version: ${payload.version}
+Message: ${message}
+Browser: ${browserInfo}
+Platform: ${platformInfo}
+Time: ${time}
+Version: ${version}
 -------------------------------
 Proceed?
       `;
-
       if (!confirm(confirmation)) return;
+
+      // Prepare payload for backend
+      const payload = {
+        content: `**Bug Report**\n${message}\n\n**Browser:** ${browserInfo}\n**Platform:** ${platformInfo}\n**Time:** ${time}\n**Version:** ${version}`
+      };
 
       try {
         const res = await fetch('https://backend-website-h19f.onrender.com/report', { 
@@ -36,7 +39,7 @@ Proceed?
 
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-        alert("Bug report sent! Thank you.");
+        alert("Bug report sent! Thank you 🙂");
         bugInput.value = '';
       } catch (err) {
         console.error("Failed:", err);
