@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Not Found</title>
+<style>
+body {
+  margin: 0;
+  background: black;
+  color: #00ff00;
+  font-family: monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+  flex-direction: column;
+  position: relative;
+}
+#backgroundOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("assets/new/not_found.gif") center center / cover no-repeat;
+  opacity: 0;
+  transition: opacity 1s ease;
+  z-index: -1;
+}
+#backgroundOverlay.visible { opacity: 1; }
+#loadedBlock {
+  text-align: center;
+  animation: fadeIn 1s ease forwards;
+}
+#clickPrompt {
+  font-size: 1.2rem;
+  margin-top: 10px;
+  animation: pulse 2s ease-in-out infinite;
+  cursor: pointer;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+@keyframes pulse {
+  0% { opacity: 0.3; text-shadow: 0 0 5px #00ff00; }
+  50% { opacity: 1; text-shadow: 0 0 15px #00ff00, 0 0 25px #00ff00; }
+  100% { opacity: 0.3; text-shadow: 0 0 5px #00ff00; }
+}
+</style>
+</head>
+<body>
+<div id="backgroundOverlay"></div>
+
+<div id="loadedBlock">
+  <div id="clickPrompt">click.</div>
+</div>
+
+<audio id="bgm" src="https://audio.jukehost.co.uk/AdXPKRDDBwHs5LoElp71AnzjcpRlcb9T" preload="auto" loop></audio>
+
+<script>
+const clickPrompt = document.getElementById('clickPrompt');
+const backgroundOverlay = document.getElementById('backgroundOverlay');
+const bgm = document.getElementById('bgm');
+
+clickPrompt.addEventListener('click', () => {
+  // Fade out the click prompt
+  document.getElementById('loadedBlock').style.animation = 'fadeOut 1s ease forwards';
+  setTimeout(() => {
+    document.getElementById('loadedBlock').style.display = 'none';
+    backgroundOverlay.classList.add('visible');
+    bgm.play();
+  }, 1000);
+});
+</script>
+</body>
+</html>

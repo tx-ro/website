@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>[BETA] Home.</title>
+<style>
+body {
+  margin: 0;
+  background: black;
+  color: #00ff00;
+  font-family: monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+  flex-direction: column;
+  position: relative;
+  cursor: url("assets/new/SOUL.png") 0 0, auto !important;
+}
+#backgroundOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("assets/new/bg.gif") center center / cover no-repeat;
+  opacity: 0;
+  transition: opacity 1s ease;
+  z-index: -1;
+}
+#flashOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 5;
+  transition: opacity 0.4s ease;
+}
+#backgroundOverlay.visible { opacity: 1; }
+#loadingMessage {
+  font-size: 1.5rem;
+  text-shadow: 0 0 10px #00ff00;
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards;
+}
+#progressContainer {
+  width: 300px;
+  height: 10px;
+  background: rgba(0, 255, 0, 0.1);
+  border: 1px solid #00ff00;
+  margin-top: 20px;
+  overflow: hidden;
+}
+#progressBar {
+  height: 100%;
+  width: 0%;
+  background: #00ff00;
+  box-shadow: 0 0 10px #00ff00;
+  transition: width 1.2s ease;
+}
+#loadedBlock {
+  display: none;
+  text-align: center;
+  animation: fadeIn 1s ease forwards;
+}
+#loadedText {
+  font-size: 1.5rem;
+  text-shadow: 0 0 10px #00ff00;
+}
+#clickPrompt {
+  font-size: 1.2rem;
+  margin-top: 10px;
+  animation: pulse 2s ease-in-out infinite;
+  cursor: pointer;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+@keyframes pulse {
+  0% { opacity: 0.3; text-shadow: 0 0 5px #00ff00; }
+  50% { opacity: 1; text-shadow: 0 0 15px #00ff00, 0 0 25px #00ff00; }
+  100% { opacity: 0.3; text-shadow: 0 0 5px #00ff00; }
+}
+#menu {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  padding: 40px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 2px solid white;
+  border-radius: 10px;
+  display: none;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  animation: fadeIn 1s ease forwards;
+  z-index: 1;
+}
+#menu.visible { display: flex; }
+.menu-button {
+  margin: 10px;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  background: rgba(0,0,0,0.6);
+  border: 2px solid white;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.menu-button:hover { background: white; color: black; }
+.button-box {
+  position: absolute;
+  top: 615px;
+  left: 429px;
+  width: 578px;
+  height: 59px;
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1;
+}
+.button-box.visible { display: flex; }
+.button-box button {
+  flex: 1;
+  margin: 0 5px;
+  background: rgba(0,0,0,0.6);
+  border: 2px solid white;
+  color: white;
+  font-family: monospace;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.button-box button:hover { background: white; color: black; }
+#mouseTracker {
+  position: fixed;
+  bottom: 40px;
+  left: 10px;
+  color: white;
+  font-size: 0.9rem;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 6px 10px;
+  border: 1px solid white;
+  display: none;
+  z-index: 10;
+}
+#highlightBox {
+  position: absolute;
+  border: 2px dashed white;
+  background: rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+  display: none;
+  z-index: 9;
+}
+#highlightInfo {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  color: white;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 6px 10px;
+  border: 1px solid white;
+  font-size: 0.9rem;
+  display: none;
+  z-index: 10;
+}
+#versionLabel {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  color: white;
+  font-family: monospace;
+  font-size: 0.9rem;
+  background: rgba(0,0,0,0.6);
+  padding: 4px 8px;
+  border: 1px solid white;
+  z-index: 10;
+}
+#optionsMenu {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  padding: 20px;
+  background: black;
+  border: 2px solid #00ff00;
+  border-radius: 10px;
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 20;
+  color: #00ff00;
+}
+#optionsMenu label { margin-top: 10px; }
+#optionsMenu textarea {
+  width: 100%;
+  height: 80px;
+  margin-top: 10px;
+  background: black;
+  border: 1px solid #00ff00;
+  color: #00ff00;
+  font-family: monospace;
+  padding: 5px;
+}
+#optionsMenu .exit-btn {
+  align-self: flex-end;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  background: black;
+  border: 2px solid #00ff00;
+  color: #00ff00;
+  cursor: pointer;
+}
+#optionsMenu .exit-btn:hover {
+  background: #00ff00;
+  color: black;
+}
+#creditsMenu {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  padding: 20px;
+  background: black;
+  border: 2px solid gold;
+  border-radius: 10px;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  z-index: 20;
+  color: gold;
+}
+#creditsMenu .header {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-bottom: 20px;
+}
+#creditsMenu .header h2 { margin: 0; font-size: 2rem; }
+#creditsMenu .header .exit-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 5px 10px;
+  background: black;
+  border: 2px solid gold;
+  color: gold;
+  cursor: pointer;
+}
+#creditsMenu .header .exit-btn:hover { background: gold; color: black; }
+#creditsMenu .credits-text { text-align: center; }
+#creditsMenu .credits-text p {
+  margin: 5px 0;
+  animation: glowPulse 2s ease-in-out infinite;
+}
+#topRightClock {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  color: #00ff00;
+  font-family: monospace;
+  text-align: right;
+  z-index: 20;
+}
+@keyframes glowPulse {
+  0% { text-shadow: 0 0 5px cyan, 0 0 10px cyan; }
+  50% { text-shadow: 0 0 15px cyan, 0 0 25px cyan; }
+  100% { text-shadow: 0 0 5px cyan, 0 0 10px cyan; }
+}
+</style>
+</head>
+<body>
+<div id="flashOverlay"></div>
+<div id="backgroundOverlay"></div>
+<div id="loadingMessage">initializing...</div>
+<div id="progressContainer"><div id="progressBar"></div></div>
+<div id="loadedBlock">
+  <div id="loadedText">Loaded!</div>
+  <div id="clickPrompt">click.</div>
+</div>
+<div id="menu">
+  <button class="menu-button">TBD</button>
+  <button class="menu-button">TBD</button>
+  <button class="menu-button">TBD</button>
+  <button class="menu-button">TBD</button>
+</div>
+<div class="button-box">
+  <button id="optionsBtn" class="menu-button">Options</button>
+  <button class="menu-button" id="creditsBtn">Credits</button>
+  <a href="https://ko-fi.com/L3L71JTT7E" target="_blank">
+    <img height="36" style="border:0;height:36px;" src="https://storage.ko-fi.com/cdn/kofi6.png?v=6" alt="Buy Me a Coffee at ko-fi.com" />
+  </a>
+</div>
+<div id="optionsMenu">
+  <button class="exit-btn" id="closeOptions">X</button>
+  <label><input type="checkbox" id="toggleSounds" checked> Toggle Sounds</label>
+  <label><input type="checkbox" id="toggleMusic" checked> Toggle Music</label>
+  <label>Volume: <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1"></label>
+  <label>Report a bug (press CTRL + Enter to send):</label>
+  <textarea id="bugReport"></textarea>
+</div>
+<div id="creditsMenu">
+  <div class="header">
+    <h2>CREDITS</h2>
+    <button class="exit-btn" id="closeCredits">X</button>
+  </div>
+  <div class="credits-text">
+    <p>Toby Fox - Pretty self explanatory.</p>
+    <p>JukeHost - For the sound/music host.</p>
+    <p>Neocities - For the website host!</p>
+  </div>
+</div>
+<div id="mouseTracker">x: 0, y: 0</div>
+<div id="highlightBox"></div>
+<div id="highlightInfo"></div>
+<div id="topRightClock">
+  <div id="currentTime">My current time: --:--:--</div>
+  <div id="statusText"></div>
+</div>
+<audio id="bgm" src="https://audio.jukehost.co.uk/TylzRrOcCvMpqmOn1OfsbGsmMg9ERyEn" preload="auto" loop></audio>
+<div id="versionLabel">v.BETA08 (error handler)</div>
+<script>
+function updateClock() {
+  const now = new Date();
+  const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+  const uyTime = new Date(utc - 3*60*60000);
+  const hours = uyTime.getHours().toString().padStart(2,'0');
+  const minutes = uyTime.getMinutes().toString().padStart(2,'0');
+  const seconds = uyTime.getSeconds().toString().padStart(2,'0');
+  document.getElementById('currentTime').textContent = 'My current time: ' + hours + ':' + minutes + ':' + seconds;
+  const day = uyTime.getDay();
+  let status = '';
+  if(hours >= 2 && hours < 10){
+    status = "i'm sleeping.";
+  } else if(day >= 1 && day <= 5 && hours >= 12 && hours < 20){
+    status = "I am in class.";
+  } else if(day === 0 || day === 6){
+    status = "I'm unoccupied.";
+  }
+  document.getElementById('statusText').textContent = status;
+}
+setInterval(updateClock, 1000);
+updateClock();
+</script>
+<script src="errorWatcher.js"></script>
+<script type="module" src="main.js"></script>
+<script type="module" src="bugReport.js"></script>
+</body>
+</html>
