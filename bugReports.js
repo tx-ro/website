@@ -21,7 +21,7 @@ Platform: ${platformInfo}
 Time: ${time}
 Version: ${version}
 -------------------------------
-Proceed?
+Proceed? (It can sometimes take a few seconds to send, be patient.)
       `;
       if (!confirm(confirmation)) return;
 
