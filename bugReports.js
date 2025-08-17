@@ -27,7 +27,11 @@ Proceed?
 
       // Prepare payload for backend
       const payload = {
-        content: `**Bug Report**\n${message}\n\n**Browser:** ${browserInfo}\n**Platform:** ${platformInfo}\n**Time:** ${time}\n**Version:** ${version}`
+        message,
+        browser: browserInfo,
+        platform: platformInfo,
+        time,
+        version
       };
 
       try {
