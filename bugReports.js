@@ -36,7 +36,7 @@ Proceed?
 
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-        alert("Bug report sent! Thank you 🙂");
+        alert("Bug report sent! Thank you.");
         bugInput.value = '';
       } catch (err) {
         console.error("Failed:", err);
