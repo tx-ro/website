@@ -9,12 +9,26 @@ if (bugInput) {
       const payload = {
         message,
         browser: navigator.userAgent,
+        platform: navigator.platform,
         time: new Date().toLocaleString(),
         version: document.getElementById('versionLabel')?.textContent || 'Unknown'
       };
 
+      const confirmation = `
+You are about to send this bug report:
+-------------------------------
+Message: ${payload.message}
+Browser/Platform: ${payload.browser} / ${payload.platform}
+Time: ${payload.time}
+Version: ${payload.version}
+-------------------------------
+Proceed?
+      `;
+
+      if (!confirm(confirmation)) return;
+
       try {
-        const res = await fetch('https://backend-website-h19f.onrender.com/', { 
+        const res = await fetch('https://backend-website-h19f.onrender.com/report', { 
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
