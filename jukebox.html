@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>[TESTING] Song Changer</title>
+<title>Jukebox</title>
 <style>
 body {
   background: black;
@@ -13,8 +13,6 @@ body {
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  position: relative;
-  overflow: hidden;
 }
 h2 { margin-top: 40px; }
 ul { list-style: none; padding: 0; }
@@ -27,21 +25,6 @@ li {
   transition: background 0.3s, color 0.3s;
 }
 li:hover { background: #00ff00; color: black; }
-.message {
-  position: absolute;
-  top: 20px;
-  font-size: 1.5rem;
-  color: gold;
-  opacity: 0;
-  transition: opacity 1s, transform 1s;
-}
-.countdown {
-  position: absolute;
-  top: 50%;
-  font-size: 4rem;
-  color: #00ff00;
-  transform: translateY(-50%);
-}
 .back-btn {
   margin-top: 40px;
   padding: 10px 20px;
@@ -60,6 +43,8 @@ li:hover { background: #00ff00; color: black; }
 <h1>DELTARUNE Jukebox</h1>
 
 <div id="jukeboxMenu"></div>
+
+<button class="back-btn" onclick="goBack()">Back to Home</button>
 
 <script>
 const CH1OST = [
@@ -115,7 +100,10 @@ function createMenuSection(title, songs) {
     const li = document.createElement('li');
     const displayName = song.split('/').pop().replace('.mp3', '');
     li.textContent = displayName;
-    li.addEventListener('click', () => switchSong(song, displayName, li));
+    li.addEventListener('click', () => {
+      localStorage.setItem('selectedBGM', song);
+      alert(`${displayName} selected! Go back to Home to play it.`);
+    });
     ul.appendChild(li);
   });
 
@@ -128,52 +116,10 @@ jukeboxMenu.appendChild(createMenuSection('DELTARUNE Chapter 1 OST', CH1OST));
 jukeboxMenu.appendChild(createMenuSection('DELTARUNE Chapter 2 OST', CH2OST));
 jukeboxMenu.appendChild(createMenuSection('DELTARUNE Chapters 3+4 OST', CH3_4OST));
 
-function switchSong(song, displayName, liElement) {
-  localStorage.setItem('selectedBGM', song);
-
-  // Highlight selected song
-  liElement.style.color = 'gold';
-
-  // Create top message
-  const msg = document.createElement('div');
-  msg.className = 'message';
-  msg.textContent = `Song switched to ${displayName}`;
-  document.body.appendChild(msg);
-
-  // Trigger fade in
-  setTimeout(() => { msg.style.opacity = 1; msg.style.transform = 'translateY(20px)'; }, 50);
-
-  // Hide everything else
-  document.body.childNodes.forEach(node => {
-    if (node !== msg) node.style.display = 'none';
-  });
-
-  // Countdown
-  const countdownDiv = document.createElement('div');
-  countdownDiv.className = 'countdown';
-  document.body.appendChild(countdownDiv);
-
-  let counter = 3;
-  const interval = setInterval(() => {
-    if (counter > 0) {
-      countdownDiv.textContent = counter;
-
-      const sound = new Audio("https://audio.jukehost.co.uk/mv9O1FkwLgv5KAvvGmMZzR0zrtCF6vpM");
-      if (counter === 2) sound.playbackRate = 1.5;
-      if (counter === 1) sound.playbackRate = 2.0;
-      sound.play();
-
-      counter--;
-    } else {
-      clearInterval(interval);
-      countdownDiv.remove();
-
-      const finalAudio = new Audio("https://audio.jukehost.co.uk/XWysLc0F6q1zLpFkfqNp5kvPJBYmcH77");
-      finalAudio.play();
-      finalAudio.onended = () => { window.location.href = 'index.html'; };
-    }
-  }, 1000);
+function goBack() {
+  window.location.href = 'index.html';
 }
 </script>
+
 </body>
 </html>
