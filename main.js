@@ -26,6 +26,7 @@ let index = 0;
 let debugActive = false;
 let isHighlighting = false;
 
+// ------------------- LOADING MESSAGES -------------------
 const loadingMessages = [
   "initializing...",
   "loading assets...",
@@ -51,7 +52,6 @@ const interval = setInterval(() => {
   index++;
   if (index >= 6) {
     clearInterval(interval);
-    loadingFinished = true;
     setTimeout(() => {
       loadingMessage.style.animation = 'fadeOut 1s ease forwards';
       progressContainer.style.display = 'none';
@@ -59,7 +59,6 @@ const interval = setInterval(() => {
         loadingMessage.style.display = 'none';
         loadedBlock.style.display = 'block';
         loadedBlock.style.animation = 'fadeIn 1s ease forwards';
-        if (window.loadingCompleted) window.loadingCompleted();
       }, 1000);
     }, 1000);
   }
@@ -80,6 +79,7 @@ clickPrompt.addEventListener('click', () => {
   }, 300);
 });
 
+// ------------------- MOUSE & HIGHLIGHT -------------------
 document.addEventListener('mousemove', (e) => {
   if (debugActive) mouseTracker.textContent = `x: ${e.clientX}, y: ${e.clientY}`;
   if (isHighlighting) {
@@ -136,6 +136,7 @@ document.addEventListener('click', (e) => {
   }
 });
 
+// ------------------- SOUNDS -------------------
 const hoverSound = new Audio("https://audio.jukehost.co.uk/4ZruYflQNOrRcO80xbq7cr4uiDDDRLpO");
 hoverSound.preload = "auto";
 const buttonClickSound = new Audio("https://audio.jukehost.co.uk/QHZd6nvlcKjRT23YT64KumNcvkXPVmw0");
@@ -144,7 +145,6 @@ const menuCloseSound = new Audio("https://audio.jukehost.co.uk/5TfzmfqD1NAHlauVd
 menuCloseSound.preload = "auto";
 
 const allButtons = document.querySelectorAll('.menu-button');
-
 allButtons.forEach(button => {
   button.addEventListener('mouseenter', () => {
     if (toggleSounds.checked) {
@@ -173,26 +173,116 @@ closeCredits.addEventListener('click', () => {
   if (toggleSounds.checked) menuCloseSound.play();
 });
 
-// ------------------- Jukebox Button Redirect -------------------
+// ------------------- Jukebox PANEL -------------------
+const CH1OST = [
+  'assets/jukebox/CH1OST/001 ANOTHER HIM.mp3',
+  'assets/jukebox/CH1OST/002 Beginning.mp3',
+  'assets/jukebox/CH1OST/003 School.mp3',
+  'assets/jukebox/CH1OST/009 Lancer.mp3',
+  'assets/jukebox/CH1OST/010 Rude Buster.mp3',
+  'assets/jukebox/CH1OST/011 Empty Town.mp3',
+  'assets/jukebox/CH1OST/013 Field of Hopes and Dreams.mp3',
+  'assets/jukebox/CH1OST/018 Quiet Autumn.mp3',
+  'assets/jukebox/CH1OST/021 Vs. Lancer.mp3',
+  'assets/jukebox/CH1OST/028 Hip Shop.mp3',
+  'assets/jukebox/CH1OST/033 THE WORLD REVOLVING.mp3',
+  'assets/jukebox/CH1OST/034 Friendship.mp3',
+  'assets/jukebox/CH1OST/038 You Can Always Come Home.mp3',
+  'assets/jukebox/CH1OST/040 Before the Story.mp3'
+];
+const CH2OST = [
+  'assets/jukebox/CH2OST/041 Faint Glow.mp3',
+  'assets/jukebox/CH2OST/042 Girl Next Door.mp3',
+  'assets/jukebox/CH2OST/043 My Castle Town.mp3',
+  'assets/jukebox/CH2OST/046 A CYBER\'S WORLD-.mp3',
+  'assets/jukebox/CH2OST/055 Smart Race.mp3',
+  'assets/jukebox/CH2OST/057 WELCOME TO THE CITY.mp3',
+  'assets/jukebox/CH2OST/058 Mini Studio.mp3',
+  'assets/jukebox/CH2OST/062 Spamton.mp3',
+  'assets/jukebox/CH2OST/063 NOW\'S YOUR CHANCE TO BE A.mp3',
+  'assets/jukebox/CH2OST/066 Pandora Palace.mp3',
+  'assets/jukebox/CH2OST/068 Acid Tunnel of Love.mp3',
+  'assets/jukebox/CH2OST/069 It\'s Pronounced -Rules-.mp3',
+  'assets/jukebox/CH2OST/070 Lost Girl.mp3',
+  'assets/jukebox/CH2OST/072 Attack of the Killer Queen.mp3',
+  'assets/jukebox/CH2OST/073 Giga Size.mp3',
+  'assets/jukebox/CH2OST/075 Knock You Down !!.mp3',
+  'assets/jukebox/CH2OST/079 BIG SHOT.mp3',
+  'assets/jukebox/CH2OST/083 Chill Jailbreak Alarm To Study And Relax To.mp3',
+  'assets/jukebox/CH2OST/084 You Can Always Come Home.mp3'
+];
+const CH3_4OST = [];
+
+const jukeboxPanel = document.createElement('div');
+jukeboxPanel.style.position = 'fixed';
+jukeboxPanel.style.top = '0';
+jukeboxPanel.style.left = '-300px';
+jukeboxPanel.style.width = '300px';
+jukeboxPanel.style.height = '100%';
+jukeboxPanel.style.background = 'rgba(0,0,0,0.9)';
+jukeboxPanel.style.borderRight = '2px solid #00ff00';
+jukeboxPanel.style.color = '#00ff00';
+jukeboxPanel.style.overflowY = 'auto';
+jukeboxPanel.style.padding = '20px';
+jukeboxPanel.style.zIndex = '50';
+jukeboxPanel.style.transition = 'left 0.5s ease';
+document.body.appendChild(jukeboxPanel);
+
+function createSection(title, songs) {
+  const section = document.createElement('div');
+  const h2 = document.createElement('h2');
+  h2.textContent = title;
+  h2.style.marginBottom = '10px';
+  section.appendChild(h2);
+
+  songs.forEach(song => {
+    const songName = song.split('/').pop().replace('.mp3','');
+    const btn = document.createElement('div');
+    btn.textContent = songName;
+    btn.style.cursor = 'pointer';
+    btn.style.padding = '5px 0';
+    btn.addEventListener('click', () => changeBGM(song));
+    btn.addEventListener('mouseenter', () => { btn.style.color = 'gold'; });
+    btn.addEventListener('mouseleave', () => { btn.style.color = '#00ff00'; });
+    section.appendChild(btn);
+  });
+  return section;
+}
+
+jukeboxPanel.appendChild(createSection('DELTARUNE Chapter 1 OST', CH1OST));
+jukeboxPanel.appendChild(createSection('DELTARUNE Chapter 2 OST', CH2OST));
+jukeboxPanel.appendChild(createSection('DELTARUNE Chapters 3+4 OST', CH3_4OST));
+
+let panelOpen = false;
+let currentBGM = bgm.src;
+
 const jukeboxBtn = document.getElementById('jukeboxBtn');
-
 jukeboxBtn.addEventListener('click', () => {
-  // Fade everything to black
-  flashOverlay.style.background = 'black';
-  flashOverlay.style.opacity = 1;
+  panelOpen = !panelOpen;
+  jukeboxPanel.style.left = panelOpen ? '0' : '-300px';
+});
 
-  // Smoothly fade out BGM
-  let fadeAudio = setInterval(() => {
+// ------------------- CHANGE BGM -------------------
+function changeBGM(src) {
+  if (src === currentBGM) return;
+  currentBGM = src;
+
+  if (!toggleMusic.checked) return;
+
+  let fadeOut = setInterval(() => {
     if (bgm.volume > 0.05) {
       bgm.volume -= 0.05;
     } else {
-      bgm.pause();
-      clearInterval(fadeAudio);
+      clearInterval(fadeOut);
+      bgm.src = src;
+      bgm.play();
+      let fadeIn = setInterval(() => {
+        if (bgm.volume < volumeSlider.value) {
+          bgm.volume += 0.05;
+        } else {
+          clearInterval(fadeIn);
+        }
+      }, 50);
     }
   }, 50);
-
-  // Redirect after 1 second
-  setTimeout(() => {
-    window.location.href = 'jukebox.html';
-  }, 1000);
-});
+}
