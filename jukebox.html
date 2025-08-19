@@ -44,8 +44,6 @@ li:hover { background: #00ff00; color: black; }
 
 <div id="jukeboxMenu"></div>
 
-<button class="back-btn" onclick="goBack()">Back to Home</button>
-
 <script>
 const CH1OST = [
   'assets/jukebox/CH1OST/001 ANOTHER HIM.mp3',
@@ -88,6 +86,13 @@ const CH2OST = [
 
 const CH3_4OST = []; // Empty for now
 
+const countdownSounds = [
+  "https://audio.jukehost.co.uk/mv9O1FkwLgv5KAvvGmMZzR0zrtCF6vpM",
+  "https://audio.jukehost.co.uk/mv9O1FkwLgv5KAvvGmMZzR0zrtCF6vpM",
+  "https://audio.jukehost.co.uk/mv9O1FkwLgv5KAvvGmMZzR0zrtCF6vpM"
+];
+const finalSound = "https://audio.jukehost.co.uk/XWysLc0F6q1zLpFkfqNp5kvPJBYmcH77";
+
 function createMenuSection(title, songs) {
   const section = document.createElement('div');
   const heading = document.createElement('h2');
@@ -98,12 +103,16 @@ function createMenuSection(title, songs) {
 
   songs.forEach(song => {
     const li = document.createElement('li');
+    li.classList.add('song-button');
     const displayName = song.split('/').pop().replace('.mp3', '');
     li.textContent = displayName;
+    li.setAttribute('data-song', displayName);
+    li.setAttribute('data-path', song);
+
     li.addEventListener('click', () => {
-      localStorage.setItem('selectedBGM', song);
-      alert(`${displayName} selected! Go back to Home to play it.`);
+      switchSong(displayName, song);
     });
+
     ul.appendChild(li);
   });
 
@@ -116,8 +125,61 @@ jukeboxMenu.appendChild(createMenuSection('DELTARUNE Chapter 1 OST', CH1OST));
 jukeboxMenu.appendChild(createMenuSection('DELTARUNE Chapter 2 OST', CH2OST));
 jukeboxMenu.appendChild(createMenuSection('DELTARUNE Chapters 3+4 OST', CH3_4OST));
 
-function goBack() {
-  window.location.href = 'index.html';
+function switchSong(songName, songPath) {
+  localStorage.setItem('selectedBGM', songPath);
+
+  // Highlight selected
+  document.querySelectorAll('.song-button').forEach(btn => btn.style.color = 'white');
+  const selectedBtn = document.querySelector(`.song-button[data-song="${songName}"]`);
+  selectedBtn.style.color = 'gold';
+
+  // Show top fade message
+  const msg = document.createElement('div');
+  msg.textContent = `Song switched to ${songName}`;
+  msg.style.position = 'fixed';
+  msg.style.top = '-50px';
+  msg.style.left = '50%';
+  msg.style.transform = 'translateX(-50%)';
+  msg.style.color = 'gold';
+  msg.style.fontSize = '1.5rem';
+  msg.style.fontFamily = 'monospace';
+  msg.style.zIndex = 100;
+  msg.style.transition = 'top 0.5s ease, opacity 0.5s ease';
+  document.body.appendChild(msg);
+  setTimeout(() => { msg.style.top = '20px'; msg.style.opacity = 1; }, 50);
+
+  // Hide everything else
+  document.querySelectorAll('body > *:not(div)').forEach(el => { el.style.display = 'none'; });
+
+  // Countdown
+  const countdownDiv = document.createElement('div');
+  countdownDiv.style.position = 'fixed';
+  countdownDiv.style.top = '50%';
+  countdownDiv.style.left = '50%';
+  countdownDiv.style.transform = 'translate(-50%, -50%)';
+  countdownDiv.style.fontSize = '5rem';
+  countdownDiv.style.color = 'gold';
+  countdownDiv.style.fontFamily = 'monospace';
+  countdownDiv.style.zIndex = 101;
+  document.body.appendChild(countdownDiv);
+
+  let counter = 3;
+  const interval = setInterval(() => {
+    if (counter > 0) {
+      countdownDiv.textContent = counter;
+      const sound = new Audio(countdownSounds[3 - counter]);
+      sound.play();
+      counter--;
+    } else {
+      clearInterval(interval);
+      countdownDiv.remove();
+      const finalAudio = new Audio(finalSound);
+      finalAudio.play();
+      finalAudio.onended = () => {
+        window.location.href = 'index.html';
+      };
+    }
+  }, 1000);
 }
 </script>
 
