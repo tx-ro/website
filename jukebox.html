@@ -1,55 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>[TESTING] Song Changer</title>
 <style>
-  body {
-    background: black;
-    color: #00ff00;
-    font-family: monospace;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-  }
-  h1 { margin-bottom: 20px; }
-  .song-button {
-    margin: 10px;
-    padding: 10px 20px;
-    background: rgba(0,0,0,0.6);
-    border: 2px solid #00ff00;
-    color: #00ff00;
-    cursor: pointer;
-    font-size: 1.2rem;
-  }
-  .song-button:hover {
-    background: #00ff00;
-    color: black;
-  }
+body {
+  background: black;
+  color: #00ff00;
+  font-family: monospace;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+h2 { margin-top: 40px; }
+ul { list-style: none; padding: 0; }
+li {
+  margin: 5px 0;
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid #00ff00;
+  border-radius: 5px;
+  transition: background 0.3s, color 0.3s;
+}
+li:hover { background: #00ff00; color: black; }
+.back-btn {
+  margin-top: 40px;
+  padding: 10px 20px;
+  font-family: monospace;
+  font-size: 1rem;
+  background: black;
+  border: 2px solid #00ff00;
+  color: #00ff00;
+  cursor: pointer;
+}
+.back-btn:hover { background: #00ff00; color: black; }
 </style>
 </head>
 <body>
-  <h1>Select a Song</h1>
 
-  <button class="song-button" data-src="https://audio.jukehost.co.uk/TylzRrOcCvMpqmOn1OfsbGsmMg9ERyEn">Default Song</button>
-  <button class="song-button" data-src="https://audio.jukehost.co.uk/SONG2.mp3">Song 2</button>
-  <button class="song-button" data-src="https://audio.jukehost.co.uk/SONG3.mp3">Song 3</button>
+<h1>DELTARUNE Jukebox</h1>
+
+<div id="jukeboxMenu"></div>
+
+<button class="back-btn" onclick="goBack()">Back to Home</button>
 
 <script>
-  const buttons = document.querySelectorAll('.song-button');
+const CH1OST = [
+  'assets/jukebox/CH1OST/001 ANOTHER HIM.mp3',
+  'assets/jukebox/CH1OST/002 Beginning.mp3',
+  'assets/jukebox/CH1OST/003 School.mp3',
+  'assets/jukebox/CH1OST/009 Lancer.mp3',
+  'assets/jukebox/CH1OST/010 Rude Buster.mp3',
+  'assets/jukebox/CH1OST/011 Empty Town.mp3',
+  'assets/jukebox/CH1OST/013 Field of Hopes and Dreams.mp3',
+  'assets/jukebox/CH1OST/018 Quiet Autumn.mp3',
+  'assets/jukebox/CH1OST/021 Vs. Lancer.mp3',
+  'assets/jukebox/CH1OST/028 Hip Shop.mp3',
+  'assets/jukebox/CH1OST/033 THE WORLD REVOLVING.mp3',
+  'assets/jukebox/CH1OST/034 Friendship.mp3',
+  'assets/jukebox/CH1OST/038 You Can Always Come Home.mp3',
+  'assets/jukebox/CH1OST/040 Before the Story.mp3'
+];
 
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const songSrc = btn.getAttribute('data-src');
-      // Save selection
-      localStorage.setItem('selectedBGM', songSrc);
-      // Redirect back to main page
-      window.location.href = 'index.html';
+const CH2OST = [
+  'assets/jukebox/CH2OST/041 Faint Glow.mp3',
+  'assets/jukebox/CH2OST/042 Girl Next Door.mp3',
+  'assets/jukebox/CH2OST/043 My Castle Town.mp3',
+  'assets/jukebox/CH2OST/046 A CYBER\'S WORLD-.mp3',
+  'assets/jukebox/CH2OST/055 Smart Race.mp3',
+  'assets/jukebox/CH2OST/057 WELCOME TO THE CITY.mp3',
+  'assets/jukebox/CH2OST/058 Mini Studio.mp3',
+  'assets/jukebox/CH2OST/062 Spamton.mp3',
+  'assets/jukebox/CH2OST/063 NOW\'S YOUR CHANCE TO BE A.mp3',
+  'assets/jukebox/CH2OST/066 Pandora Palace.mp3',
+  'assets/jukebox/CH2OST/068 Acid Tunnel of Love.mp3',
+  'assets/jukebox/CH2OST/069 It\'s Pronounced -Rules-.mp3',
+  'assets/jukebox/CH2OST/070 Lost Girl.mp3',
+  'assets/jukebox/CH2OST/072 Attack of the Killer Queen.mp3',
+  'assets/jukebox/CH2OST/073 Giga Size.mp3',
+  'assets/jukebox/CH2OST/075 Knock You Down !!.mp3',
+  'assets/jukebox/CH2OST/079 BIG SHOT.mp3',
+  'assets/jukebox/CH2OST/083 Chill Jailbreak Alarm To Study And Relax To.mp3',
+  'assets/jukebox/CH2OST/084 You Can Always Come Home.mp3'
+];
+
+const CH3_4OST = []; // Empty for now
+
+function createMenuSection(title, songs) {
+  const section = document.createElement('div');
+  const heading = document.createElement('h2');
+  heading.textContent = title;
+  section.appendChild(heading);
+
+  const ul = document.createElement('ul');
+
+  songs.forEach(song => {
+    const li = document.createElement('li');
+    const displayName = song.split('/').pop().replace('.mp3', '');
+    li.textContent = displayName;
+    li.addEventListener('click', () => {
+      localStorage.setItem('selectedBGM', song);
+      alert(`${displayName} selected! Go back to Home to play it.`);
     });
+    ul.appendChild(li);
   });
+
+  section.appendChild(ul);
+  return section;
+}
+
+const jukeboxMenu = document.getElementById('jukeboxMenu');
+jukeboxMenu.appendChild(createMenuSection('DELTARUNE Chapter 1 OST', CH1OST));
+jukeboxMenu.appendChild(createMenuSection('DELTARUNE Chapter 2 OST', CH2OST));
+jukeboxMenu.appendChild(createMenuSection('DELTARUNE Chapters 3+4 OST', CH3_4OST));
+
+function goBack() {
+  window.location.href = 'index.html';
+}
 </script>
+
 </body>
 </html>
