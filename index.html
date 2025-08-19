@@ -279,6 +279,8 @@ body {
   50% { text-shadow: 0 0 15px cyan, 0 0 25px cyan; }
   100% { text-shadow: 0 0 5px cyan, 0 0 10px cyan; }
 }
+
+/* Jukebox panel updates */
 #jukeboxPanel {
   position: fixed;
   top: 50%;
@@ -291,18 +293,23 @@ body {
   border-radius: 8px;
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  overflow: hidden; /* hide scrollbar */
   z-index: 30;
-  padding: 8px;
   transition: left 0.3s ease;
 }
-#jukeboxPanel::-webkit-scrollbar {
-  width: 0;
+#jukeboxPanel.open { left: 10px; }
+
+#jukeboxPanelInner {
+  flex: 1;
+  overflow-y: scroll; /* allow scrolling */
+  padding: 8px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
+}
+#jukeboxPanelInner::-webkit-scrollbar {
+  width: 0; /* Chrome/Safari/Opera */
   background: transparent;
 }
-#jukeboxPanel.open { left: 10px; }
 #jukeboxPanel button {
   background: rgba(0,0,0,0.6);
   border: 1px solid #00ff00;
@@ -341,7 +348,12 @@ body {
     <img height="36" style="border:0;height:36px;" src="https://storage.ko-fi.com/cdn/kofi6.png?v=6" alt="Buy Me a Coffee at ko-fi.com" />
   </a>
 </div>
-<div id="jukeboxPanel"></div>
+
+<!-- Updated jukebox panel -->
+<div id="jukeboxPanel">
+  <div id="jukeboxPanelInner"></div>
+</div>
+
 <div id="optionsMenu">
   <button class="exit-btn" id="closeOptions">X</button>
   <label><input type="checkbox" id="toggleSounds" checked> Toggle Sounds</label>
