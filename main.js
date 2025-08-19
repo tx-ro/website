@@ -20,6 +20,7 @@ const creditsBtn = document.getElementById('creditsBtn');
 const closeCredits = document.getElementById('closeCredits');
 const loadedText = document.getElementById('loadedText');
 const bugReport = document.getElementById('bugReport');
+const flashOverlay = document.getElementById('flashOverlay');
 
 let index = 0;
 let debugActive = false;
@@ -48,31 +49,27 @@ function showNextMessage() {
 const interval = setInterval(() => {
   showNextMessage();
   index++;
-if (index >= 6) {
-  clearInterval(interval);
-  loadingFinished = true; // optional here
-  setTimeout(() => {
-    loadingMessage.style.animation = 'fadeOut 1s ease forwards';
-    progressContainer.style.display = 'none';
+  if (index >= 6) {
+    clearInterval(interval);
+    loadingFinished = true;
     setTimeout(() => {
-      loadingMessage.style.display = 'none';
-      loadedBlock.style.display = 'block';
-      loadedBlock.style.animation = 'fadeIn 1s ease forwards';
-
-      // Notify errorWatcher that loading completed successfully
-      if (window.loadingCompleted) window.loadingCompleted();
-
+      loadingMessage.style.animation = 'fadeOut 1s ease forwards';
+      progressContainer.style.display = 'none';
+      setTimeout(() => {
+        loadingMessage.style.display = 'none';
+        loadedBlock.style.display = 'block';
+        loadedBlock.style.animation = 'fadeIn 1s ease forwards';
+        if (window.loadingCompleted) window.loadingCompleted();
+      }, 1000);
     }, 1000);
-  }, 1000);
-}
+  }
 }, 1200);
 
 clickPrompt.addEventListener('click', () => {
   loadedBlock.style.animation = 'fadeOut 1s ease forwards';
-  const flash = document.getElementById('flashOverlay');
-  flash.style.opacity = 0.6;
+  flashOverlay.style.opacity = 0.6;
   setTimeout(() => {
-    flash.style.opacity = 0;
+    flashOverlay.style.opacity = 0;
     loadedBlock.style.display = 'none';
     backgroundOverlay.classList.add('visible');
     if (toggleMusic.checked) bgm.play();
@@ -174,4 +171,28 @@ creditsBtn.addEventListener('click', () => document.getElementById('creditsMenu'
 closeCredits.addEventListener('click', () => {
   document.getElementById('creditsMenu').style.display = 'none';
   if (toggleSounds.checked) menuCloseSound.play();
+});
+
+// ------------------- Jukebox Button Redirect -------------------
+const jukeboxBtn = document.getElementById('jukeboxBtn');
+
+jukeboxBtn.addEventListener('click', () => {
+  // Fade everything to black
+  flashOverlay.style.background = 'black';
+  flashOverlay.style.opacity = 1;
+
+  // Smoothly fade out BGM
+  let fadeAudio = setInterval(() => {
+    if (bgm.volume > 0.05) {
+      bgm.volume -= 0.05;
+    } else {
+      bgm.pause();
+      clearInterval(fadeAudio);
+    }
+  }, 50);
+
+  // Redirect after 1 second
+  setTimeout(() => {
+    window.location.href = 'jukebox.html';
+  }, 1000);
 });
