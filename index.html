@@ -279,6 +279,35 @@ body {
   50% { text-shadow: 0 0 15px cyan, 0 0 25px cyan; }
   100% { text-shadow: 0 0 5px cyan, 0 0 10px cyan; }
 }
+#jukeboxPanel {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 200px;
+  max-height: 80%;
+  background: rgba(0,0,0,0.9);
+  border: 2px solid #00ff00;
+  border-radius: 10px;
+  display: none;
+  flex-direction: column;
+  overflow-y: auto;
+  z-index: 30;
+  padding: 10px;
+}
+#jukeboxPanel button {
+  background: rgba(0,0,0,0.6);
+  border: 1px solid #00ff00;
+  color: #00ff00;
+  margin: 5px 0;
+  padding: 8px;
+  font-family: monospace;
+  cursor: pointer;
+}
+#jukeboxPanel button:hover {
+  background: #00ff00;
+  color: black;
+}
 </style>
 </head>
 <body>
@@ -296,6 +325,7 @@ body {
   <button class="menu-button">TBD</button>
   <button class="menu-button">TBD</button>
 </div>
+<div id="jukeboxPanel"></div>
 <div class="button-box">
   <button id="optionsBtn" class="menu-button">Options</button>
   <button class="menu-button" id="creditsBtn">Credits</button>
