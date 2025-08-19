@@ -291,13 +291,17 @@ body {
   border-radius: 8px;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   z-index: 30;
   padding: 8px;
   transition: left 0.3s ease;
-  scrollbar-width: none;
 }
-#jukeboxPanel::-webkit-scrollbar { display: none; }
+#jukeboxPanel::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
 #jukeboxPanel.open { left: 10px; }
 #jukeboxPanel button {
   background: rgba(0,0,0,0.6);
