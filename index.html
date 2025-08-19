@@ -279,38 +279,6 @@ body {
   50% { text-shadow: 0 0 15px cyan, 0 0 25px cyan; }
   100% { text-shadow: 0 0 5px cyan, 0 0 10px cyan; }
 }
-
-/* Jukebox styles */
-#jukeboxMenu {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0,0,0,0.7);
-  padding: 20px;
-  border: 2px solid #00ff00;
-  border-radius: 10px;
-  color: #00ff00;
-  max-width: 80%;
-  z-index: 15;
-  overflow-y: auto;
-  max-height: 300px;
-}
-#jukeboxMenu h2 { margin-top: 0; }
-#jukeboxMenu h3 { margin: 10px 0 5px; }
-#jukeboxMenu button {
-  margin: 2px;
-  padding: 5px 10px;
-  background: black;
-  border: 1px solid #00ff00;
-  color: #00ff00;
-  cursor: pointer;
-  font-family: monospace;
-}
-#jukeboxMenu button:hover {
-  background: #00ff00;
-  color: black;
-}
 </style>
 </head>
 <body>
@@ -322,12 +290,6 @@ body {
   <div id="loadedText">Loaded!</div>
   <div id="clickPrompt">click.</div>
 </div>
-
-<!-- Jukebox Menu -->
-<div id="jukeboxMenu">
-  <h2>🎵 Jukebox</h2>
-</div>
-
 <div id="menu">
   <button class="menu-button">TBD</button>
   <button class="menu-button">TBD</button>
@@ -369,7 +331,6 @@ body {
 </div>
 <audio id="bgm" src="https://audio.jukehost.co.uk/TylzRrOcCvMpqmOn1OfsbGsmMg9ERyEn" preload="auto" loop></audio>
 <div id="versionLabel">v.BETA12 (bug reports!)</div>
-
 <script>
 function updateClock() {
   const now = new Date();
@@ -393,31 +354,8 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 </script>
-
 <script src="errorWatcher.js"></script>
 <script type="module" src="bugReports.js"></script>
 <script type="module" src="main.js"></script>
-
-<!-- Jukebox Script -->
-<script src="assets/scripts/jukebox.js"></script>
-<script>
-  const menu = document.getElementById("jukeboxMenu");
-
-  Object.keys(jukebox.chapters).forEach(chapter => {
-    const section = document.createElement("div");
-    const title = document.createElement("h3");
-    title.textContent = chapter;
-    section.appendChild(title);
-
-    jukebox.chapters[chapter].forEach(song => {
-      const btn = document.createElement("button");
-      btn.textContent = song.name;
-      btn.onclick = () => jukebox.playSong(song.path);
-      section.appendChild(btn);
-    });
-
-    menu.appendChild(section);
-  });
-</script>
 </body>
 </html>
