@@ -282,26 +282,27 @@ body {
 #jukeboxPanel {
   position: absolute;
   top: 50%;
-  left: 0;
+  left: 10px;
   transform: translateY(-50%);
-  width: 200px;
-  max-height: 80%;
-  background: rgba(0,0,0,0.9);
+  width: 180px;
+  max-height: 60%;
+  background: rgba(0,0,0,0.85);
   border: 2px solid #00ff00;
-  border-radius: 10px;
+  border-radius: 8px;
   display: none;
   flex-direction: column;
   overflow-y: auto;
   z-index: 30;
-  padding: 10px;
+  padding: 8px;
 }
 #jukeboxPanel button {
   background: rgba(0,0,0,0.6);
   border: 1px solid #00ff00;
   color: #00ff00;
-  margin: 5px 0;
-  padding: 8px;
+  margin: 4px 0;
+  padding: 6px;
   font-family: monospace;
+  font-size: 0.9rem;
   cursor: pointer;
 }
 #jukeboxPanel button:hover {
@@ -325,7 +326,6 @@ body {
   <button class="menu-button">TBD</button>
   <button class="menu-button">TBD</button>
 </div>
-<div id="jukeboxPanel"></div>
 <div class="button-box">
   <button id="optionsBtn" class="menu-button">Options</button>
   <button class="menu-button" id="creditsBtn">Credits</button>
@@ -333,6 +333,7 @@ body {
     <img height="36" style="border:0;height:36px;" src="https://storage.ko-fi.com/cdn/kofi6.png?v=6" alt="Buy Me a Coffee at ko-fi.com" />
   </a>
 </div>
+<div id="jukeboxPanel"></div>
 <div id="optionsMenu">
   <button class="exit-btn" id="closeOptions">X</button>
   <label><input type="checkbox" id="toggleSounds" checked> Toggle Sounds</label>
