@@ -13,6 +13,8 @@ body {
   flex-direction: column;
   align-items: center;
   padding: 20px;
+  position: relative;
+  overflow: hidden;
 }
 h2 { margin-top: 40px; }
 ul { list-style: none; padding: 0; }
@@ -25,6 +27,21 @@ li {
   transition: background 0.3s, color 0.3s;
 }
 li:hover { background: #00ff00; color: black; }
+.message {
+  position: absolute;
+  top: 20px;
+  font-size: 1.5rem;
+  color: gold;
+  opacity: 0;
+  transition: opacity 1s, transform 1s;
+}
+.countdown {
+  position: absolute;
+  top: 50%;
+  font-size: 4rem;
+  color: #00ff00;
+  transform: translateY(-50%);
+}
 .back-btn {
   margin-top: 40px;
   padding: 10px 20px;
@@ -86,13 +103,6 @@ const CH2OST = [
 
 const CH3_4OST = []; // Empty for now
 
-const countdownSounds = [
-  "https://audio.jukehost.co.uk/mv9O1FkwLgv5KAvvGmMZzR0zrtCF6vpM",
-  "https://audio.jukehost.co.uk/mv9O1FkwLgv5KAvvGmMZzR0zrtCF6vpM",
-  "https://audio.jukehost.co.uk/mv9O1FkwLgv5KAvvGmMZzR0zrtCF6vpM"
-];
-const finalSound = "https://audio.jukehost.co.uk/XWysLc0F6q1zLpFkfqNp5kvPJBYmcH77";
-
 function createMenuSection(title, songs) {
   const section = document.createElement('div');
   const heading = document.createElement('h2');
@@ -103,16 +113,9 @@ function createMenuSection(title, songs) {
 
   songs.forEach(song => {
     const li = document.createElement('li');
-    li.classList.add('song-button');
     const displayName = song.split('/').pop().replace('.mp3', '');
     li.textContent = displayName;
-    li.setAttribute('data-song', displayName);
-    li.setAttribute('data-path', song);
-
-    li.addEventListener('click', () => {
-      switchSong(displayName, song);
-    });
-
+    li.addEventListener('click', () => switchSong(song, displayName, li));
     ul.appendChild(li);
   });
 
@@ -125,63 +128,52 @@ jukeboxMenu.appendChild(createMenuSection('DELTARUNE Chapter 1 OST', CH1OST));
 jukeboxMenu.appendChild(createMenuSection('DELTARUNE Chapter 2 OST', CH2OST));
 jukeboxMenu.appendChild(createMenuSection('DELTARUNE Chapters 3+4 OST', CH3_4OST));
 
-function switchSong(songName, songPath) {
-  localStorage.setItem('selectedBGM', songPath);
+function switchSong(song, displayName, liElement) {
+  localStorage.setItem('selectedBGM', song);
 
-  // Highlight selected
-  document.querySelectorAll('.song-button').forEach(btn => btn.style.color = 'white');
-  const selectedBtn = document.querySelector(`.song-button[data-song="${songName}"]`);
-  selectedBtn.style.color = 'gold';
+  // Highlight selected song
+  liElement.style.color = 'gold';
 
-  // Show top fade message
+  // Create top message
   const msg = document.createElement('div');
-  msg.textContent = `Song switched to ${songName}`;
-  msg.style.position = 'fixed';
-  msg.style.top = '-50px';
-  msg.style.left = '50%';
-  msg.style.transform = 'translateX(-50%)';
-  msg.style.color = 'gold';
-  msg.style.fontSize = '1.5rem';
-  msg.style.fontFamily = 'monospace';
-  msg.style.zIndex = 100;
-  msg.style.transition = 'top 0.5s ease, opacity 0.5s ease';
+  msg.className = 'message';
+  msg.textContent = `Song switched to ${displayName}`;
   document.body.appendChild(msg);
-  setTimeout(() => { msg.style.top = '20px'; msg.style.opacity = 1; }, 50);
+
+  // Trigger fade in
+  setTimeout(() => { msg.style.opacity = 1; msg.style.transform = 'translateY(20px)'; }, 50);
 
   // Hide everything else
-  document.querySelectorAll('body > *:not(div)').forEach(el => { el.style.display = 'none'; });
+  document.body.childNodes.forEach(node => {
+    if (node !== msg) node.style.display = 'none';
+  });
 
   // Countdown
   const countdownDiv = document.createElement('div');
-  countdownDiv.style.position = 'fixed';
-  countdownDiv.style.top = '50%';
-  countdownDiv.style.left = '50%';
-  countdownDiv.style.transform = 'translate(-50%, -50%)';
-  countdownDiv.style.fontSize = '5rem';
-  countdownDiv.style.color = 'gold';
-  countdownDiv.style.fontFamily = 'monospace';
-  countdownDiv.style.zIndex = 101;
+  countdownDiv.className = 'countdown';
   document.body.appendChild(countdownDiv);
 
   let counter = 3;
   const interval = setInterval(() => {
     if (counter > 0) {
       countdownDiv.textContent = counter;
-      const sound = new Audio(countdownSounds[3 - counter]);
+
+      const sound = new Audio("https://audio.jukehost.co.uk/mv9O1FkwLgv5KAvvGmMZzR0zrtCF6vpM");
+      if (counter === 2) sound.playbackRate = 1.5;
+      if (counter === 1) sound.playbackRate = 2.0;
       sound.play();
+
       counter--;
     } else {
       clearInterval(interval);
       countdownDiv.remove();
-      const finalAudio = new Audio(finalSound);
+
+      const finalAudio = new Audio("https://audio.jukehost.co.uk/XWysLc0F6q1zLpFkfqNp5kvPJBYmcH77");
       finalAudio.play();
-      finalAudio.onended = () => {
-        window.location.href = 'index.html';
-      };
+      finalAudio.onended = () => { window.location.href = 'index.html'; };
     }
   }, 1000);
 }
 </script>
-
 </body>
 </html>
