@@ -279,44 +279,37 @@ body {
   50% { text-shadow: 0 0 15px cyan, 0 0 25px cyan; }
   100% { text-shadow: 0 0 5px cyan, 0 0 10px cyan; }
 }
-/* Jukebox panel hidden scrollbar and off-screen by default */
-#jukeboxPanel {
-  position: fixed;
+#jukeboxMenu {
+  position: absolute;
   top: 50%;
-  left: -220px; /* hidden off-screen */
-  transform: translateY(-50%);
-  width: 200px;
-  max-height: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  max-height: 70%;
   background: rgba(0,0,0,0.85);
   border: 2px solid #00ff00;
-  border-radius: 8px;
-  display: flex;
+  border-radius: 10px;
+  display: none;
   flex-direction: column;
-  overflow-y: auto; /* allow scroll but hide scrollbar */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE 10+ */
+  padding: 10px;
+  overflow: hidden;
   z-index: 30;
-  padding: 8px;
-  transition: left 0.4s ease;
 }
-#jukeboxPanel::-webkit-scrollbar {
-  width: 0;
-  background: transparent;
+.chapter {
+  margin-bottom: 8px;
 }
-#jukeboxPanel.open { left: 10px; }
-#jukeboxPanel button {
-  background: rgba(0,0,0,0.6);
-  border: 1px solid #00ff00;
-  color: #00ff00;
-  margin: 4px 0;
-  padding: 6px;
-  font-family: monospace;
-  font-size: 0.9rem;
+.chapter-header {
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+}
+.chapter-songs div {
+  padding-left: 10px;
   cursor: pointer;
 }
-#jukeboxPanel button:hover {
-  background: #00ff00;
-  color: black;
+.chapter-songs div:hover {
+  color: gold;
 }
 </style>
 </head>
@@ -342,7 +335,6 @@ body {
     <img height="36" style="border:0;height:36px;" src="https://storage.ko-fi.com/cdn/kofi6.png?v=6" alt="Buy Me a Coffee at ko-fi.com" />
   </a>
 </div>
-<div id="jukeboxPanel"></div>
 <div id="optionsMenu">
   <button class="exit-btn" id="closeOptions">X</button>
   <label><input type="checkbox" id="toggleSounds" checked> Toggle Sounds</label>
@@ -371,6 +363,10 @@ body {
 </div>
 <audio id="bgm" src="https://audio.jukehost.co.uk/TylzRrOcCvMpqmOn1OfsbGsmMg9ERyEn" preload="auto" loop></audio>
 <div id="versionLabel">v.BETA16 (bgm changer)</div>
+<div id="jukeboxMenu">
+  <button class="exit-btn" id="closeJukebox">X</button>
+  <div id="jukeboxChapters"></div>
+</div>
 <script>
 function updateClock() {
   const now = new Date();
@@ -397,13 +393,5 @@ updateClock();
 <script src="errorWatcher.js"></script>
 <script type="module" src="bugReports.js"></script>
 <script type="module" src="main.js"></script>
-<script>
-const jukeboxBtn = document.getElementById('jukeboxBtn');
-const jukeboxPanel = document.getElementById('jukeboxPanel');
-
-jukeboxBtn.addEventListener('click', () => {
-  jukeboxPanel.classList.toggle('open');
-});
-</script>
 </body>
 </html>
