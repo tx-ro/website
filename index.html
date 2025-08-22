@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>[BETA] Home</title>
+<title>[BETA] Home.</title>
 <style>
 body {
   margin: 0;
@@ -265,51 +265,10 @@ body {
   margin: 5px 0;
   animation: glowPulse 2s ease-in-out infinite;
 }
-#topRightClock {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  color: #00ff00;
-  font-family: monospace;
-  text-align: right;
-  z-index: 20;
-}
 @keyframes glowPulse {
   0% { text-shadow: 0 0 5px cyan, 0 0 10px cyan; }
   50% { text-shadow: 0 0 15px cyan, 0 0 25px cyan; }
   100% { text-shadow: 0 0 5px cyan, 0 0 10px cyan; }
-}
-#jukeboxMenu {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 400px;
-  max-height: 70%;
-  background: rgba(0,0,0,0.85);
-  border: 2px solid #00ff00;
-  border-radius: 10px;
-  display: none;
-  flex-direction: column;
-  padding: 10px;
-  overflow: hidden;
-  z-index: 30;
-}
-.chapter {
-  margin-bottom: 8px;
-}
-.chapter-header {
-  cursor: pointer;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-}
-.chapter-songs div {
-  padding-left: 10px;
-  cursor: pointer;
-}
-.chapter-songs div:hover {
-  color: gold;
 }
 </style>
 </head>
@@ -357,39 +316,8 @@ body {
 <div id="mouseTracker">x: 0, y: 0</div>
 <div id="highlightBox"></div>
 <div id="highlightInfo"></div>
-<div id="topRightClock">
-  <div id="currentTime">My current time: --:--:--</div>
-  <div id="statusText"></div>
-</div>
 <audio id="bgm" src="https://audio.jukehost.co.uk/TylzRrOcCvMpqmOn1OfsbGsmMg9ERyEn" preload="auto" loop></audio>
 <div id="versionLabel">v.BETA16 (bgm changer)</div>
-<div id="jukeboxMenu">
-  <button class="exit-btn" id="closeJukebox">X</button>
-  <div id="jukeboxChapters"></div>
-</div>
-<script>
-function updateClock() {
-  const now = new Date();
-  const utc = now.getTime() + now.getTimezoneOffset() * 60000;
-  const uyTime = new Date(utc - 3*60*60000);
-  const hours = uyTime.getHours().toString().padStart(2,'0');
-  const minutes = uyTime.getMinutes().toString().padStart(2,'0');
-  const seconds = uyTime.getSeconds().toString().padStart(2,'0');
-  document.getElementById('currentTime').textContent = 'My current time: ' + hours + ':' + minutes + ':' + seconds;
-  const day = uyTime.getDay();
-  let status = '';
-  if(hours >= 2 && hours < 10){
-    status = "i'm sleeping.";
-  } else if(day >= 1 && day <= 5 && hours >= 12 && hours < 20){
-    status = "I am in class.";
-  } else if(day === 0 || day === 6){
-    status = "I'm unoccupied.";
-  }
-  document.getElementById('statusText').textContent = status;
-}
-setInterval(updateClock, 1000);
-updateClock();
-</script>
 <script src="errorWatcher.js"></script>
 <script type="module" src="bugReports.js"></script>
 <script type="module" src="main.js"></script>
