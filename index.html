@@ -85,7 +85,18 @@ body {
   0% { opacity: 0.3; text-shadow: 0 0 5px #00ff00; }
   50% { opacity: 1; text-shadow: 0 0 15px #00ff00, 0 0 25px #00ff00; }
   100% { opacity: 0.3; text-shadow: 0 0 5px #00ff00; }
+@keyframes flash {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
 }
+
+#infoToggle {
+  cursor: pointer;
+  font-size: 1rem;
+  animation: flash 1s infinite;
+}
+
+
 #menu {
   position: absolute;
   top: 50%;
@@ -347,7 +358,7 @@ body {
 <audio id="bgm" src="https://audio.jukehost.co.uk/TylzRrOcCvMpqmOn1OfsbGsmMg9ERyEn" preload="auto" loop></audio>
 <div id="versionWrapper">
   <div id="versionLabel">v.BETA16 (bgm changer)</div>
-  <div id="infoToggle">❗</div>
+  <div id="infoToggle">📢 NEWS 📢</div>
 </div>
 <div id="infoMenu">
   <p>still thinking about the layout for the jukebox, the design is <span style="color:red;">not final!</span></p>
