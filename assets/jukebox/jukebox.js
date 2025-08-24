@@ -43,7 +43,7 @@ const bgm = document.getElementById('bgm');
 const toggleMusic = document.getElementById('toggleMusic');
 const volumeSlider = document.getElementById('volumeSlider');
 
-let currentSongDiv = null; // Track the currently playing song
+let currentSongDiv = null;
 
 // Create jukebox menu
 const jukeboxMenu = document.createElement('div');
@@ -128,6 +128,7 @@ function createChapter(title, songs) {
 
   songs.forEach(song => {
     const songDiv = document.createElement('div');
+    songDiv.dataset.src = song;
     songDiv.textContent = song.split('/').pop().replace('.mp3', '');
     songDiv.style.cursor = 'pointer';
     songDiv.style.padding = '2px 0';
@@ -138,17 +139,7 @@ function createChapter(title, songs) {
       bgm.src = song;
       bgm.play();
       bgm.volume = volumeSlider.value;
-
-      // Reset previous song
-      if (currentSongDiv) {
-        currentSongDiv.style.color = '#00ff00';
-        currentSongDiv.textContent = currentSongDiv.textContent.replace(' 🔊', '');
-      }
-
-      // Set current song
-      songDiv.style.color = 'white';
-      songDiv.textContent += ' 🔊';
-      currentSongDiv = songDiv;
+      updateCurrentSong(songDiv);
     });
 
     songDiv.addEventListener('mouseenter', () => {
@@ -173,6 +164,17 @@ function createChapter(title, songs) {
 
   chapterDiv.appendChild(songList);
   return chapterDiv;
+}
+
+// Function to highlight current song
+function updateCurrentSong(newSongDiv) {
+  if (currentSongDiv) {
+    currentSongDiv.style.color = '#00ff00';
+    currentSongDiv.textContent = currentSongDiv.textContent.replace(' 🔊', '');
+  }
+  newSongDiv.style.color = 'white';
+  newSongDiv.textContent += ' 🔊';
+  currentSongDiv = newSongDiv;
 }
 
 // Append chapters
