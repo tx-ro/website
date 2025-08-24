@@ -45,10 +45,9 @@ const volumeSlider = document.getElementById('volumeSlider');
 
 // Create jukebox menu
 const jukeboxMenu = document.createElement('div');
-jukeboxMenu.style.position = 'relative';
-jukeboxMenu.style.top = '50%';
-jukeboxMenu.style.left = '50%';
-jukeboxMenu.style.transform = 'translate(-50%, -50%)';
+jukeboxMenu.style.position = 'fixed';
+jukeboxMenu.style.top = '10px'; // top right
+jukeboxMenu.style.right = '10px';
 jukeboxMenu.style.width = '400px';
 jukeboxMenu.style.maxHeight = '70%';
 jukeboxMenu.style.background = 'rgba(0,0,0,0.9)';
@@ -69,7 +68,7 @@ jukeboxMenu.style.webkitOverflowScrolling = 'touch';
 jukeboxMenu.style.overflow = 'auto';
 jukeboxMenu.style.scrollBehavior = 'smooth';
 
-// Close button
+// Close button with sound
 const closeBtn = document.createElement('button');
 closeBtn.textContent = 'X';
 closeBtn.style.position = 'absolute';
@@ -80,7 +79,8 @@ closeBtn.style.background = 'black';
 closeBtn.style.border = '2px solid #00ff00';
 closeBtn.style.color = '#00ff00';
 closeBtn.style.cursor = 'pointer';
-closeBtn.style.zIndex = '100'; // make sure it's above everything
+closeBtn.style.zIndex = '100';
+const closeSound = new Audio('https://audio.jukehost.co.uk/5TfzmfqD1NAHlauVd7uv65X64hzogwHw');
 closeBtn.addEventListener('mouseenter', () => {
   closeBtn.style.background = '#00ff00';
   closeBtn.style.color = 'black';
@@ -90,6 +90,7 @@ closeBtn.addEventListener('mouseleave', () => {
   closeBtn.style.color = '#00ff00';
 });
 closeBtn.addEventListener('click', () => {
+  closeSound.play();
   jukeboxMenu.style.display = 'none';
   menuOpen = false;
 });
@@ -98,18 +99,23 @@ jukeboxMenu.appendChild(closeBtn);
 // Function to create chapters
 function createChapter(title, songs) {
   const chapterDiv = document.createElement('div');
-  chapterDiv.style.marginBottom = '10px';
+  chapterDiv.style.marginBottom = '15px';
 
   const header = document.createElement('div');
   header.style.display = 'flex';
   header.style.justifyContent = 'space-between';
   header.style.cursor = 'pointer';
+  header.style.fontSize = '1.4rem'; // bigger title
+  header.style.fontWeight = 'bold';
+  header.style.borderBottom = '1px solid #00ff00';
+  header.style.paddingBottom = '5px';
 
   const titleSpan = document.createElement('span');
   titleSpan.textContent = title;
 
   const arrow = document.createElement('span');
   arrow.textContent = '►';
+  arrow.style.fontSize = '1.4rem'; // make arrow bigger
 
   header.appendChild(titleSpan);
   header.appendChild(arrow);
