@@ -46,7 +46,7 @@ const volumeSlider = document.getElementById('volumeSlider');
 // Create jukebox menu
 const jukeboxMenu = document.createElement('div');
 jukeboxMenu.style.position = 'fixed';
-jukeboxMenu.style.top = '10px'; // top right
+jukeboxMenu.style.top = '10px';
 jukeboxMenu.style.right = '10px';
 jukeboxMenu.style.width = '400px';
 jukeboxMenu.style.maxHeight = '70%';
@@ -61,10 +61,8 @@ jukeboxMenu.style.flexDirection = 'column';
 jukeboxMenu.style.zIndex = '50';
 document.body.appendChild(jukeboxMenu);
 
-// Hide scrollbars for different browsers
+// Hide scrollbars
 jukeboxMenu.style.msOverflowStyle = 'none';
-jukeboxMenu.style.overflow = '-moz-scrollbars-none';
-jukeboxMenu.style.webkitOverflowScrolling = 'touch';
 jukeboxMenu.style.overflow = 'auto';
 jukeboxMenu.style.scrollBehavior = 'smooth';
 
@@ -90,6 +88,7 @@ closeBtn.addEventListener('mouseleave', () => {
   closeBtn.style.color = '#00ff00';
 });
 closeBtn.addEventListener('click', () => {
+  closeSound.currentTime = 0; // reset to start
   closeSound.play();
   jukeboxMenu.style.display = 'none';
   menuOpen = false;
@@ -105,7 +104,7 @@ function createChapter(title, songs) {
   header.style.display = 'flex';
   header.style.justifyContent = 'space-between';
   header.style.cursor = 'pointer';
-  header.style.fontSize = '1.4rem'; // bigger title
+  header.style.fontSize = '1.4rem';
   header.style.fontWeight = 'bold';
   header.style.borderBottom = '1px solid #00ff00';
   header.style.paddingBottom = '5px';
@@ -115,7 +114,7 @@ function createChapter(title, songs) {
 
   const arrow = document.createElement('span');
   arrow.textContent = '►';
-  arrow.style.fontSize = '1.4rem'; // make arrow bigger
+  arrow.style.fontSize = '1.4rem';
 
   header.appendChild(titleSpan);
   header.appendChild(arrow);
