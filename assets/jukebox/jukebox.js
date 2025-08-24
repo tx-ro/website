@@ -45,7 +45,7 @@ const volumeSlider = document.getElementById('volumeSlider');
 
 // Create jukebox menu
 const jukeboxMenu = document.createElement('div');
-jukeboxMenu.style.position = 'fixed';
+jukeboxMenu.style.position = 'relative';
 jukeboxMenu.style.top = '50%';
 jukeboxMenu.style.left = '50%';
 jukeboxMenu.style.transform = 'translate(-50%, -50%)';
