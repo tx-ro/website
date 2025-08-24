@@ -72,13 +72,15 @@ jukeboxMenu.style.scrollBehavior = 'smooth';
 // Close button
 const closeBtn = document.createElement('button');
 closeBtn.textContent = 'X';
-closeBtn.style.alignSelf = 'flex-end';
-closeBtn.style.marginBottom = '10px';
+closeBtn.style.position = 'absolute';
+closeBtn.style.top = '10px';
+closeBtn.style.right = '10px';
 closeBtn.style.padding = '5px 10px';
 closeBtn.style.background = 'black';
 closeBtn.style.border = '2px solid #00ff00';
 closeBtn.style.color = '#00ff00';
 closeBtn.style.cursor = 'pointer';
+closeBtn.style.zIndex = '100'; // make sure it's above everything
 closeBtn.addEventListener('mouseenter', () => {
   closeBtn.style.background = '#00ff00';
   closeBtn.style.color = 'black';
