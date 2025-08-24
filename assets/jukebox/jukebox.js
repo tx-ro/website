@@ -37,7 +37,51 @@ const CH2OST = [
   'assets/jukebox/CH2OST/084 You Can Always Come Home.mp3'
 ];
 
-const CH3_4OST = [];
+const CH3_4OST = [
+  'assets/jukebox/CH3+4OST/091 MIKE, the BOARD, please!.mp3',
+  'assets/jukebox/CH3+4OST/092 Sandy Board.mp3',
+  'assets/jukebox/CH3+4OST/093 Adventure Board.mp3',
+  'assets/jukebox/CH3+4OST/098 Ruder Buster.mp3',
+  'assets/jukebox/CH3+4OST/099 Physical Challenge.mp3',
+  'assets/jukebox/CH3+4OST/101 Welcome to the Green Room.mp3',
+  'assets/jukebox/CH3+4OST/102 Vapor Buster.mp3',
+  'assets/jukebox/CH3+4OST/107 Raise Up Your Bat.mp3',
+  'assets/jukebox/CH3+4OST/108 KING OF ROLYPOLY.mp3',
+  'assets/jukebox/CH3+4OST/110 Big City Board.mp3',
+  'assets/jukebox/CH3+4OST/111 Doom Board.mp3',
+  'assets/jukebox/CH3+4OST/113 TV WORLD.mp3',
+  'assets/jukebox/CH3+4OST/114 It’s TV Time!.mp3',
+  'assets/jukebox/CH3+4OST/117 Black Knife.mp3',
+  'assets/jukebox/CH3+4OST/119 Dump.mp3',
+  'assets/jukebox/CH3+4OST/120 SWORD.mp3',
+  'assets/jukebox/CH3+4OST/122 GLACEIR.mp3',
+  'assets/jukebox/CH3+4OST/128 Another day in hometown.mp3',
+  'assets/jukebox/CH3+4OST/129 Friends.mp3',
+  'assets/jukebox/CH3+4OST/130 Castle Funk.mp3',
+  'assets/jukebox/CH3+4OST/133 The distance between two.mp3',
+  'assets/jukebox/CH3+4OST/135 ATRIUM.mp3',
+  'assets/jukebox/CH3+4OST/136 Dark Sanctuary.mp3',
+  'assets/jukebox/CH3+4OST/137 From Now On (Battle 2).mp3',
+  'assets/jukebox/CH3+4OST/139 Fireplace.mp3',
+  'assets/jukebox/CH3+4OST/140 A DARK ZONE.mp3',
+  'assets/jukebox/CH3+4OST/141 Mysterious Ringing.mp3',
+  'assets/jukebox/CH3+4OST/145 Hammer of Justice.mp3',
+  'assets/jukebox/CH3+4OST/146 12am.mp3',
+  'assets/jukebox/CH3+4OST/147 The Second Sanctuary.mp3',
+  'assets/jukebox/CH3+4OST/148 Ripple.mp3',
+  'assets/jukebox/CH3+4OST/149 13am.mp3',
+  'assets/jukebox/CH3+4OST/150 The Third Sanctuary.mp3',
+  'assets/jukebox/CH3+4OST/151 Dark Place.mp3',
+  'assets/jukebox/CH3+4OST/154 SPAWN.mp3',
+  'assets/jukebox/CH3+4OST/155 GUARDIAN.mp3',
+  'assets/jukebox/CH3+4OST/156 Need a hand!-.mp3',
+  'assets/jukebox/CH3+4OST/157 The place where it rained.mp3',
+  'assets/jukebox/CH3+4OST/158 The Ol’ Jitterbug.mp3',
+  'assets/jukebox/CH3+4OST/159 Neverending Night.mp3',
+  'assets/jukebox/CH3+4OST/161 With Hope Crossed On Our Hearts.mp3',
+  'assets/jukebox/CH3+4OST/163 Catswing.mp3',
+  'assets/jukebox/CH3+4OST/164 AIRWAVES.mp3'
+];
 
 const bgm = document.getElementById('bgm');
 const toggleMusic = document.getElementById('toggleMusic');
