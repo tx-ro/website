@@ -57,14 +57,37 @@ jukeboxMenu.style.color = '#00ff00';
 jukeboxMenu.style.overflowY = 'auto';
 jukeboxMenu.style.padding = '20px';
 jukeboxMenu.style.display = 'none';
+jukeboxMenu.style.flexDirection = 'column';
 jukeboxMenu.style.zIndex = '50';
-jukeboxMenu.style.scrollbarWidth = 'none';
 document.body.appendChild(jukeboxMenu);
+
+// Add Close Button
+const closeBtn = document.createElement('button');
+closeBtn.textContent = 'X';
+closeBtn.style.alignSelf = 'flex-end';
+closeBtn.style.marginBottom = '10px';
+closeBtn.style.padding = '5px 10px';
+closeBtn.style.background = 'black';
+closeBtn.style.border = '2px solid #00ff00';
+closeBtn.style.color = '#00ff00';
+closeBtn.style.cursor = 'pointer';
+closeBtn.addEventListener('mouseenter', () => {
+  closeBtn.style.background = '#00ff00';
+  closeBtn.style.color = 'black';
+});
+closeBtn.addEventListener('mouseleave', () => {
+  closeBtn.style.background = 'black';
+  closeBtn.style.color = '#00ff00';
+});
+closeBtn.addEventListener('click', () => {
+  jukeboxMenu.style.display = 'none';
+  menuOpen = false;
+});
+jukeboxMenu.appendChild(closeBtn);
 
 jukeboxMenu.style.msOverflowStyle = 'none';
 jukeboxMenu.style.overflow = '-moz-scrollbars-none';
 jukeboxMenu.style.webkitOverflowScrolling = 'touch';
-jukeboxMenu.style.overflow = 'auto';
 jukeboxMenu.style.scrollBehavior = 'smooth';
 
 function createChapter(title, songs) {
