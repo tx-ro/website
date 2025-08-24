@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - Not Found</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      color: #00ff00;
+      font-family: monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    #loadingScreen, #loadedBlock, #notFoundBlock {
+      text-align: center;
+    }
+
+    #progressContainer {
+      width: 300px;
+      height: 20px;
+      border: 1px solid #00ff00;
+      margin: 20px auto;
+    }
+
+    #progressBar {
+      width: 0%;
+      height: 100%;
+      background: #00ff00;
+      transition: width 1.2s ease;
+    }
+
+    #clickPrompt {
+      animation: pulse 1.5s infinite;
+      cursor: pointer;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div id="loadingScreen">
+    <div id="loadingMessage">initializing...</div>
+    <div id="progressContainer">
+      <div id="progressBar"></div>
+    </div>
+  </div>
+
+  <div id="loadedBlock" style="display:none;">
+    <div>Loaded!</div>
+    <div id="clickPrompt">click.</div>
+  </div>
+
+  <div id="notFoundBlock" style="display:none;">
+    <h1>404</h1>
+    <p>Page Not Found</p>
+  </div>
+
+  <script>
+    const progressBar = document.getElementById("progressBar");
+    const loadingScreen = document.getElementById("loadingScreen");
+    const loadedBlock = document.getElementById("loadedBlock");
+    const notFoundBlock = document.getElementById("notFoundBlock");
+    const clickPrompt = document.getElementById("clickPrompt");
+
+    // Simulate progress loading
+    setTimeout(() => {
+      progressBar.style.width = "100%";
+    }, 500);
+
+    // After bar fills, show "Loaded!"
+    setTimeout(() => {
+      loadingScreen.style.display = "none";
+      loadedBlock.style.display = "block";
+    }, 2000);
+
+    // After click, show 404 message
+    clickPrompt.addEventListener("click", () => {
+      loadedBlock.style.display = "none";
+      notFoundBlock.style.display = "block";
+    });
+  </script>
+</body>
+</html>
