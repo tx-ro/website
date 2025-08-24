@@ -43,6 +43,7 @@ const bgm = document.getElementById('bgm');
 const toggleMusic = document.getElementById('toggleMusic');
 const volumeSlider = document.getElementById('volumeSlider');
 
+// Create jukebox menu
 const jukeboxMenu = document.createElement('div');
 jukeboxMenu.style.position = 'fixed';
 jukeboxMenu.style.top = '50%';
@@ -61,7 +62,14 @@ jukeboxMenu.style.flexDirection = 'column';
 jukeboxMenu.style.zIndex = '50';
 document.body.appendChild(jukeboxMenu);
 
-// Add Close Button
+// Hide scrollbars for different browsers
+jukeboxMenu.style.msOverflowStyle = 'none';
+jukeboxMenu.style.overflow = '-moz-scrollbars-none';
+jukeboxMenu.style.webkitOverflowScrolling = 'touch';
+jukeboxMenu.style.overflow = 'auto';
+jukeboxMenu.style.scrollBehavior = 'smooth';
+
+// Close button
 const closeBtn = document.createElement('button');
 closeBtn.textContent = 'X';
 closeBtn.style.alignSelf = 'flex-end';
@@ -85,11 +93,7 @@ closeBtn.addEventListener('click', () => {
 });
 jukeboxMenu.appendChild(closeBtn);
 
-jukeboxMenu.style.msOverflowStyle = 'none';
-jukeboxMenu.style.overflow = '-moz-scrollbars-none';
-jukeboxMenu.style.webkitOverflowScrolling = 'touch';
-jukeboxMenu.style.scrollBehavior = 'smooth';
-
+// Function to create chapters
 function createChapter(title, songs) {
   const chapterDiv = document.createElement('div');
   chapterDiv.style.marginBottom = '10px';
@@ -142,10 +146,12 @@ function createChapter(title, songs) {
   return chapterDiv;
 }
 
+// Append chapters
 jukeboxMenu.appendChild(createChapter('DELTARUNE Chapter 1 OST', CH1OST));
 jukeboxMenu.appendChild(createChapter('DELTARUNE Chapter 2 OST', CH2OST));
 jukeboxMenu.appendChild(createChapter('DELTARUNE Chapters 3+4 OST', CH3_4OST));
 
+// Jukebox toggle button
 const jukeboxBtn = document.getElementById('jukeboxBtn');
 let menuOpen = false;
 jukeboxBtn.addEventListener('click', () => {
