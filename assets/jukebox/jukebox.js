@@ -43,6 +43,8 @@ const bgm = document.getElementById('bgm');
 const toggleMusic = document.getElementById('toggleMusic');
 const volumeSlider = document.getElementById('volumeSlider');
 
+let currentSongDiv = null; // Track the currently playing song
+
 // Create jukebox menu
 const jukeboxMenu = document.createElement('div');
 jukeboxMenu.style.position = 'fixed';
@@ -88,7 +90,7 @@ closeBtn.addEventListener('mouseleave', () => {
   closeBtn.style.color = '#00ff00';
 });
 closeBtn.addEventListener('click', () => {
-  closeSound.currentTime = 0; // reset to start
+  closeSound.currentTime = 0;
   closeSound.play();
   jukeboxMenu.style.display = 'none';
   menuOpen = false;
@@ -123,19 +125,39 @@ function createChapter(title, songs) {
   const songList = document.createElement('div');
   songList.style.display = 'none';
   songList.style.marginTop = '5px';
+
   songs.forEach(song => {
     const songDiv = document.createElement('div');
     songDiv.textContent = song.split('/').pop().replace('.mp3', '');
     songDiv.style.cursor = 'pointer';
     songDiv.style.padding = '2px 0';
+
     songDiv.addEventListener('click', () => {
       if (!toggleMusic.checked) return;
+
       bgm.src = song;
       bgm.play();
       bgm.volume = volumeSlider.value;
+
+      // Reset previous song
+      if (currentSongDiv) {
+        currentSongDiv.style.color = '#00ff00';
+        currentSongDiv.textContent = currentSongDiv.textContent.replace(' 🔊', '');
+      }
+
+      // Set current song
+      songDiv.style.color = 'white';
+      songDiv.textContent += ' 🔊';
+      currentSongDiv = songDiv;
     });
-    songDiv.addEventListener('mouseenter', () => songDiv.style.color = 'gold');
-    songDiv.addEventListener('mouseleave', () => songDiv.style.color = '#00ff00');
+
+    songDiv.addEventListener('mouseenter', () => {
+      if (songDiv !== currentSongDiv) songDiv.style.color = 'gold';
+    });
+    songDiv.addEventListener('mouseleave', () => {
+      if (songDiv !== currentSongDiv) songDiv.style.color = '#00ff00';
+    });
+
     songList.appendChild(songDiv);
   });
 
